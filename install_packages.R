@@ -1,0 +1,7 @@
+install.packages("DT")
+install.packages("shinydashboard")
+install.packages("ggrepel")
+install.packages("plotly")
+install.packages("jsonlite")
+install.packages("purrr")
+install.packages("dplyr")

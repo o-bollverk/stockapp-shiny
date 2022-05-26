@@ -3,10 +3,14 @@ library(dplyr)
 library(shiny)
 library(purrr)
 library(jsonlite)
+library(arrow)
 
-data_dir <- "~/shinyapp-data/"
-list.files(data_dir)
-combined_df <- data.table::fread(paste0(data_dir, "tweets_trends_prices_combined.csv"))
+#data_dir <- "~/shinyapp-data/"
+#list.files(data_dir)
+#combined_df <- data.table::fread(paste0(data_dir, "tweets_trends_prices_combined.csv"))
+bucket <- s3_bucket("oliver-shiny-bucket")
+combined_df = read_csv_arrow(bucket$path("tweets_trends_prices_combined.csv"))
+
 
 stock_df <- combined_df %>% 
   filter(value_type == "stock") %>% 

@@ -20,6 +20,8 @@ trends$date <- as_date(ceiling_date(trends$date, unit = "weeks", change_on_bound
 
 trends
 
+
+
 trends %>%  
   plot_ly(x=~date, y=~hits, mode = 'lines', name = "Google Search Trends") %>%
   layout(title = paste0("Interest over Time: ",symbol), yaxis = list(title = "hits"))

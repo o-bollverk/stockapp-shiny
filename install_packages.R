@@ -1,7 +1,14 @@
-install.packages("DT")
-install.packages("shinydashboard")
-install.packages("ggrepel")
-install.packages("plotly")
-install.packages("jsonlite")
-install.packages("purrr")
-install.packages("dplyr")
+packages = c("DT", "shinydashboard",
+             "ggrepel", "plotly", "jsonlite", "purrr", "dplyr")
+
+## Now load or install&load all
+package.check <- lapply(
+  packages,
+  FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  }
+)
+

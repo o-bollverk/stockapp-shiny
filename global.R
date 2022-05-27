@@ -4,13 +4,11 @@ library(shiny)
 library(purrr)
 library(jsonlite)
 library(prophet)
-library(tidyverse)
 library(shiny)
 library(DT)
 #library(leaflet)
 library(plotly)
 library(shinydashboard)
-library(ggrepel)
 
 #data_dir <- "~/shinyapp-data/"
 #list.files(data_dir)

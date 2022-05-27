@@ -1,5 +1,5 @@
 packages = c("DT", "shinydashboard",
-             "ggrepel", "plotly", "jsonlite", "purrr", "dplyr")
+             "ggrepel", "plotly", "jsonlite", "purrr", "dplyr", "prophet")
 
 ## Now load or install&load all
 package.check <- lapply(

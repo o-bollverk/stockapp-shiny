@@ -73,7 +73,7 @@ trends_vec <- vector(mode = "list")
 
 for(symbol in c("Tesla", "Apple", "Bitcoin")){
   #trends <- gtrends(keyword = symbol, geo = "US", onlyInterest = TRUE,time = "NOW-H")
-  trends <- gtrends(keyword = symbol, geo = "US", onlyInterest = TRUE,time = "now 1-d")
+  trends <- gtrends(keyword = symbol, geo = "US", onlyInterest = TRUE,time = "today 3-m")
   trends <- trends$interest_over_time %>%
     as_data_frame() %>%
     select(c(date, hits, keyword))

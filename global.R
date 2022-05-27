@@ -3,7 +3,14 @@ library(dplyr)
 library(shiny)
 library(purrr)
 library(jsonlite)
-library(arrow)
+library(prophet)
+library(tidyverse)
+library(shiny)
+library(DT)
+#library(leaflet)
+library(plotly)
+library(shinydashboard)
+library(ggrepel)
 
 #data_dir <- "~/shinyapp-data/"
 #list.files(data_dir)
@@ -40,3 +47,6 @@ trends_df <-
   combined_df %>% 
   filter(value_type == "keyword") %>% 
   mutate(value = as.numeric(value))
+
+normalize_to_onezero <- function(x)(x-min(x))/(max(x)-min(x))
+

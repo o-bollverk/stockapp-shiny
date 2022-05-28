@@ -165,6 +165,24 @@ ui = dashboardPage(
             plotlyOutput("plot4", width = "1200px", height = "500px")
           )
         )
+      ),
+      tabPanel("Aggregated statistics",
+               #tabItem(tabName = "test2",
+               #tabName = "Modelling and forecasting",
+               fluidRow(
+                 box(
+                   width = 8,
+                   title = "Mean price over a window of 14 days",
+                   plotlyOutput("plot5",width = "1200px", height = "500px"),
+                 )
+               ),
+               fluidRow(
+                 box(
+                   width = 8,
+                   title = "Mean sentiment",
+                   plotlyOutput("plot6", width = "1200px", height = "500px")
+                 )
+               )
       )
   )
 )
@@ -247,6 +265,52 @@ server = function(input, output){
       #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
       filter(time > input$time_slider[1] & 
              time < input$time_slider[2]) %>% 
+      filter(value_type != "text") %>% 
+      mutate(value = as.numeric(value)) %>% 
+      group_by(value_type) %>% 
+      mutate(normalized_value = normalize_to_onezero(value)) %>% 
+      ungroup() %>% 
+      ggplot(aes(x = time, y = normalized_value, color = value_type, group = value_type)) + 
+      #geom_point() + 
+      geom_line() + 
+      theme_bw() + 
+      theme(
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+      ) + 
+      ggtitle(input$stock_selection_prediction)
+  })
+  output$plot5 = renderPlotly({
+    
+    combined_df %>% 
+      filter(symbol == input$stock_selection_prediction) %>% 
+      #filter(time %in% )
+      #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
+      filter(time > input$time_slider[1] & 
+               time < input$time_slider[2]) %>% 
+      filter(value_type != "text") %>% 
+      mutate(value = as.numeric(value)) %>% 
+      group_by(value_type) %>% 
+      mutate(normalized_value = normalize_to_onezero(value)) %>% 
+      ungroup() %>% 
+      ggplot(aes(x = time, y = normalized_value, color = value_type, group = value_type)) + 
+      #geom_point() + 
+      geom_line() + 
+      theme_bw() + 
+      theme(
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+      ) + 
+      ggtitle(input$stock_selection_prediction)
+  })
+  output$plot6 = renderPlotly({
+    
+    combined_df %>% 
+      filter(symbol == input$stock_selection_prediction) %>% 
+      #filter(time %in% )
+      #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
+      filter(time > input$time_slider[1] & 
+               time < input$time_slider[2]) %>% 
       filter(value_type != "text") %>% 
       mutate(value = as.numeric(value)) %>% 
       group_by(value_type) %>% 

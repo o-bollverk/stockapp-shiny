@@ -9,6 +9,8 @@ library(plotly)
 
 # http://rstudio-pubs-static.s3.amazonaws.com/493413_f3d12f11474a4484b2791dd0fd0a9bf5.html
 
+trends_vec <- vector(mode = "list")
+
 for(symbol in c("Tesla", "Apple", "Bitcoin")){
   #trends <- gtrends(keyword = symbol, geo = "US", onlyInterest = TRUE,time = "NOW-H")
   trends <- gtrends(keyword = symbol, geo = "US", onlyInterest = TRUE,time = "today 3-m")

@@ -15,8 +15,9 @@ library(ggrepel)
 data_dir <- "~/shinyapp-data/"
 list.files(data_dir)
 combined_df <- data.table::fread(paste0(data_dir, "tweets_trends_prices_combined.csv"))
+aggregated_df <- data.table::fread(paste0(data_dir, "result_aggregated.csv"))
 #aggregated_df <- 
-
+aggregated_df$window_size %>% unique()
 # no zeros in keyword
 combined_df <- combined_df %>% 
   filter(!(value_type == "keyword" & value == 0))
@@ -275,8 +276,6 @@ server = function(input, output){
     
     trends_df %>% 
       filter(symbol == input$stock_selection_prediction) %>% 
-      filter(window_size == input$window_size_selection) %>% 
-      #filter(time %in% )
       #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
       filter(time > input$time_slider[1] & 
              time < input$time_slider[2]) %>% 
@@ -297,11 +296,12 @@ server = function(input, output){
   })
   output$plot5 = renderPlotly({
     aggregated_df %>% 
-      filter(symbol == input$stock_selection) %>% 
+      filter(symbol %in% input$stock_selection) %>% 
       filter(window_size == input$window_size_selection) %>%
-      filter(value_type == "price") %>% 
-      filter(time > input$time_slider[1] & 
-               time < input$time_slider[2]) %>% 
+      filter(value_type == "stock") %>% 
+      #filter(time > input$time_slider[1] & 
+      #         time < input$time_slider[2]) %>% 
+      arrange(symbol, time) %>% 
       ggplot(aes(x = time, y = mean, color = symbol, group = symbol)) + 
       #geom_point() + 
       geom_line() + 
@@ -315,13 +315,15 @@ server = function(input, output){
   output$plot6 = renderPlotly({
     
     aggregated_df %>% 
-      filter(symbol == input$stock_selection) %>% 
+      filter(symbol %in% input$stock_selection) %>% 
+      filter(window_size == input$window_size_selection) %>%
       filter(value_type == "sentiment") %>% 
-      filter(time > input$time_slider[1] & 
-               time < input$time_slider[2]) %>% 
+      #filter(time > input$time_slider[1] & 
+      #         time < input$time_slider[2]) %>% 
+      arrange(symbol, time) %>% 
       ggplot(aes(x = time, y = mean, color = symbol, group = symbol)) + 
       #geom_point() + 
-      geom_line() + 
+      geom_point() + 
       theme_bw() + 
       theme(
         axis.title.y = element_blank(),
@@ -332,6 +334,9 @@ server = function(input, output){
 }
 
 shinyApp(ui = ui, server = server)
+
+
+
 
 combined_df %>% 
   filter(symbol == "Bitcoin") %>%  

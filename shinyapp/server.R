@@ -1,3 +1,4 @@
+
 server = function(input, output){
   output$plot = renderPlotly({
     ggplot(stock_df %>%
@@ -70,8 +71,6 @@ server = function(input, output){
     
     trends_df %>% 
       filter(symbol == input$stock_selection_prediction) %>% 
-      filter(window_size == input$window_size_selection) %>% 
-      #filter(time %in% )
       #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
       filter(time > input$time_slider[1] & 
                time < input$time_slider[2]) %>% 
@@ -92,11 +91,12 @@ server = function(input, output){
   })
   output$plot5 = renderPlotly({
     aggregated_df %>% 
-      filter(symbol == input$stock_selection) %>% 
+      filter(symbol %in% input$stock_selection) %>% 
       filter(window_size == input$window_size_selection) %>%
-      filter(value_type == "price") %>% 
-      filter(time > input$time_slider[1] & 
-               time < input$time_slider[2]) %>% 
+      filter(value_type == "stock") %>% 
+      #filter(time > input$time_slider[1] & 
+      #         time < input$time_slider[2]) %>% 
+      arrange(symbol, time) %>% 
       ggplot(aes(x = time, y = mean, color = symbol, group = symbol)) + 
       #geom_point() + 
       geom_line() + 
@@ -110,13 +110,15 @@ server = function(input, output){
   output$plot6 = renderPlotly({
     
     aggregated_df %>% 
-      filter(symbol == input$stock_selection) %>% 
+      filter(symbol %in% input$stock_selection) %>% 
+      filter(window_size == input$window_size_selection) %>%
       filter(value_type == "sentiment") %>% 
-      filter(time > input$time_slider[1] & 
-               time < input$time_slider[2]) %>% 
+      #filter(time > input$time_slider[1] & 
+      #         time < input$time_slider[2]) %>% 
+      arrange(symbol, time) %>% 
       ggplot(aes(x = time, y = mean, color = symbol, group = symbol)) + 
       #geom_point() + 
-      geom_line() + 
+      geom_point() + 
       theme_bw() + 
       theme(
         axis.title.y = element_blank(),
@@ -125,3 +127,4 @@ server = function(input, output){
   })
   
 }
+

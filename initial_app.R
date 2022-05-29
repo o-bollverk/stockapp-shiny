@@ -53,7 +53,7 @@ trends_df <-
 # shinydashboard ----------------
 
 
-normalize_to_onezero <- function(x)(x-min(x))/(max(x)-min(x))
+normalize_to_onezero <- function(x){(x-min(x))/(max(x)-min(x))}
 
 
 ui = dashboardPage(
@@ -273,9 +273,9 @@ server = function(input, output){
   })
   output$plot4 = renderPlotly({
     
-    aggregated_df %>% 
+    trends_df %>% 
       filter(symbol == input$stock_selection_prediction) %>% 
-      filter(window_size = input$window_size_selection) %>% 
+      filter(window_size == input$window_size_selection) %>% 
       #filter(time %in% )
       #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
       filter(time > input$time_slider[1] & 
@@ -298,7 +298,7 @@ server = function(input, output){
   output$plot5 = renderPlotly({
     aggregated_df %>% 
       filter(symbol == input$stock_selection) %>% 
-      filter(window_size = input$window_size_selection) %>%
+      filter(window_size == input$window_size_selection) %>%
       filter(value_type == "price") %>% 
       filter(time > input$time_slider[1] & 
                time < input$time_slider[2]) %>% 

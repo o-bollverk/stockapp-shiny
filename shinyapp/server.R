@@ -69,8 +69,9 @@ server = function(input, output){
   })
   output$plot4 = renderPlotly({
     
-    combined_df %>% 
+    aggregated_df %>% 
       filter(symbol == input$stock_selection_prediction) %>% 
+      filter(window_size = input$window_size_selection) %>% 
       #filter(time %in% )
       #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
       filter(time > input$time_slider[1] & 
@@ -89,6 +90,39 @@ server = function(input, output){
         axis.title.x = element_blank()
       ) + 
       ggtitle(input$stock_selection_prediction)
+  })
+  output$plot5 = renderPlotly({
+    aggregated_df %>% 
+      filter(symbol == input$stock_selection) %>% 
+      filter(window_size = input$window_size_selection) %>%
+      filter(value_type == "price") %>% 
+      filter(time > input$time_slider[1] & 
+               time < input$time_slider[2]) %>% 
+      ggplot(aes(x = time, y = mean, color = symbol, group = symbol)) + 
+      #geom_point() + 
+      geom_line() + 
+      theme_bw() + 
+      theme(
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+      ) 
+    
+  })
+  output$plot6 = renderPlotly({
+    
+    aggregated_df %>% 
+      filter(symbol == input$stock_selection) %>% 
+      filter(value_type == "sentiment") %>% 
+      filter(time > input$time_slider[1] & 
+               time < input$time_slider[2]) %>% 
+      ggplot(aes(x = time, y = mean, color = symbol, group = symbol)) + 
+      #geom_point() + 
+      geom_line() + 
+      theme_bw() + 
+      theme(
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+      ) 
   })
   
 }

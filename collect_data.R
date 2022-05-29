@@ -67,6 +67,32 @@ tweets_df <- rbind.data.frame(btc_tweet_df %>%
   select(-timestamp, -id, -text) #%>% 
  # mutate(time = as.POSIXct(strptime(.$time, "%Y-%m-%d- %H:%M:%S")))
 
+# Combine news files -------
+
+btc_news_df <- jsonlite::read_json(paste0(data_dir, "Bitcoin_new.json"),simplifyVector = T) %>%
+  mutate(time = as.POSIXct(datetime/1000, origin="1970-01-01")) %>% 
+  tidyr::drop_na() %>% 
+  mutate(symbol = "Bitcoin")
+
+apple_news_df <- jsonlite::read_json(paste0(data_dir, "Apple_new.json"),simplifyVector = T) %>%
+  mutate(time = as.POSIXct(datetime/1000, origin="1970-01-01")) %>% 
+  tidyr::drop_na() %>% 
+  mutate(symbol = "Apple")
+
+tesla_news_df <- jsonlite::read_json(paste0(data_dir, "Tesla_new.json"),simplifyVector = T) %>%
+  mutate(time = as.POSIXct(datetime/1000, origin="1970-01-01")) %>% 
+  tidyr::drop_na() %>% 
+  mutate(symbol = "Tesla")
+
+
+news_df <- rbind.data.frame(btc_news_df,
+                            apple_news_df, 
+                            tesla_news_df) %>% 
+  mutate(value = sentiment) %>% 
+  mutate(value_type = "sentiment") %>% 
+  select(-sentiment, -datetime)
+  
+
 # Obtain google trends data with the gtrendsR package ---------
 
 trends_vec <- vector(mode = "list")
@@ -91,20 +117,22 @@ trends_df <- trends_df %>%
   select(-keyword, -hits, -date)
 
 # combine into single csv --------
-rbind.data.frame(
-  tweets_df,
-  trends_df %>% 
-    select(names(tweets_df)) %>% 
-    mutate(value = as.character(value)),
-  stock_df %>%  
-    select(names(tweets_df)) %>% 
-    mutate(value = as.character(value))
-)
+# rbind.data.frame(
+#   tweets_df,
+#   trends_df %>% 
+#     select(names(tweets_df)) %>% 
+#     mutate(value = as.character(value)),
+#   stock_df %>%  
+#     select(names(tweets_df)) %>% 
+#     mutate(value = as.character(value)),
+#   news_df
+# )
 combined_df <- 
   rbind.data.frame(
     tweets_df,
     trends_df,
-    stock_df
+    stock_df,
+    news_df
   )
 
 # remove commas

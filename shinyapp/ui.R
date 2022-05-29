@@ -69,6 +69,19 @@ ui = dashboardPage(
                )
       )
     ),
+    sidebarMenu(
+      menuItem(text = "Aggregated price and sentiment",
+               icon = icon("dollar"),
+               startExpanded = T,
+               radioButtons(
+                 "window_size_selection",
+                 label = "Select window size to aggregate over",
+                 choiceNames =  c(3, 7, 14), 
+                 choiceValues =  c(3, 7, 14), 
+                 selected = 7,
+               )
+      )
+    ),
     width = "350px"
     
   ),
@@ -117,6 +130,24 @@ ui = dashboardPage(
                              width = 8,
                              title = "Normalized Google trend score and normalized price",
                              plotlyOutput("plot4", width = "1200px", height = "500px")
+                           )
+                         )
+                ),
+                tabPanel("Aggregated statistics",
+                         #tabItem(tabName = "test2",
+                         #tabName = "Modelling and forecasting",
+                         fluidRow(
+                           box(
+                             width = 8,
+                             title = "Mean price over a selected window of days",
+                             plotlyOutput("plot5",width = "1200px", height = "500px"),
+                           )
+                         ),
+                         fluidRow(
+                           box(
+                             width = 8,
+                             title = "Mean sentiment over a selected window of days",
+                             plotlyOutput("plot6", width = "1200px", height = "500px")
                            )
                          )
                 )

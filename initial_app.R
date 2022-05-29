@@ -15,6 +15,7 @@ library(ggrepel)
 data_dir <- "~/shinyapp-data/"
 list.files(data_dir)
 combined_df <- data.table::fread(paste0(data_dir, "tweets_trends_prices_combined.csv"))
+#aggregated_df <- 
 
 # no zeros in keyword
 combined_df <- combined_df %>% 
@@ -115,6 +116,19 @@ ui = dashboardPage(
     )
       )
     ),
+    sidebarMenu(
+      menuItem(text = "Aggregated price and sentiment",
+               icon = icon("dollar"),
+               startExpanded = T,
+               radioButtons(
+                 "window_size_selection",
+                 label = "Select window size to aggregate over",
+                 choiceNames =  c(3, 7, 14), 
+                 choiceValues =  c(3, 7, 14), 
+                 selected = 7,
+               )
+               )
+      ),
     width = "350px"
     
 ),
@@ -172,14 +186,14 @@ ui = dashboardPage(
                fluidRow(
                  box(
                    width = 8,
-                   title = "Mean price over a window of 14 days",
+                   title = "Mean price over a selected window of days",
                    plotlyOutput("plot5",width = "1200px", height = "500px"),
                  )
                ),
                fluidRow(
                  box(
                    width = 8,
-                   title = "Mean sentiment",
+                   title = "Mean sentiment over a selected window of days",
                    plotlyOutput("plot6", width = "1200px", height = "500px")
                  )
                )
@@ -259,8 +273,9 @@ server = function(input, output){
   })
   output$plot4 = renderPlotly({
     
-    combined_df %>% 
+    aggregated_df %>% 
       filter(symbol == input$stock_selection_prediction) %>% 
+      filter(window_size = input$window_size_selection) %>% 
       #filter(time %in% )
       #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
       filter(time > input$time_slider[1] & 
@@ -281,50 +296,37 @@ server = function(input, output){
       ggtitle(input$stock_selection_prediction)
   })
   output$plot5 = renderPlotly({
-    
-    combined_df %>% 
-      filter(symbol == input$stock_selection_prediction) %>% 
-      #filter(time %in% )
-      #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
+    aggregated_df %>% 
+      filter(symbol == input$stock_selection) %>% 
+      filter(window_size = input$window_size_selection) %>%
+      filter(value_type == "price") %>% 
       filter(time > input$time_slider[1] & 
                time < input$time_slider[2]) %>% 
-      filter(value_type != "text") %>% 
-      mutate(value = as.numeric(value)) %>% 
-      group_by(value_type) %>% 
-      mutate(normalized_value = normalize_to_onezero(value)) %>% 
-      ungroup() %>% 
-      ggplot(aes(x = time, y = normalized_value, color = value_type, group = value_type)) + 
+      ggplot(aes(x = time, y = mean, color = symbol, group = symbol)) + 
       #geom_point() + 
       geom_line() + 
       theme_bw() + 
       theme(
         axis.title.y = element_blank(),
         axis.title.x = element_blank()
-      ) + 
-      ggtitle(input$stock_selection_prediction)
+      ) 
+    
   })
   output$plot6 = renderPlotly({
     
-    combined_df %>% 
-      filter(symbol == input$stock_selection_prediction) %>% 
-      #filter(time %in% )
-      #mutate(value = ifelse(value_type == "text", as.numeric(wordcount), value)) %>% 
+    aggregated_df %>% 
+      filter(symbol == input$stock_selection) %>% 
+      filter(value_type == "sentiment") %>% 
       filter(time > input$time_slider[1] & 
                time < input$time_slider[2]) %>% 
-      filter(value_type != "text") %>% 
-      mutate(value = as.numeric(value)) %>% 
-      group_by(value_type) %>% 
-      mutate(normalized_value = normalize_to_onezero(value)) %>% 
-      ungroup() %>% 
-      ggplot(aes(x = time, y = normalized_value, color = value_type, group = value_type)) + 
+      ggplot(aes(x = time, y = mean, color = symbol, group = symbol)) + 
       #geom_point() + 
       geom_line() + 
       theme_bw() + 
       theme(
         axis.title.y = element_blank(),
         axis.title.x = element_blank()
-      ) + 
-      ggtitle(input$stock_selection_prediction)
+      ) 
   })
   
 }

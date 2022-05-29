@@ -13,9 +13,9 @@ library(shinydashboard)
 #data_dir <- "~/shinyapp-data/"
 #list.files(data_dir)
 #combined_df <- data.table::fread(paste0(data_dir, "tweets_trends_prices_combined.csv"))
-bucket <- s3_bucket("oliver-shiny-bucket")
+bucket <- s3_bucket("ccbda-final-proj")
 combined_df = read_csv_arrow(bucket$path("tweets_trends_prices_combined.csv"))
-
+combined_df = read_csv_arrow(bucket$path("result_aggregated.csv"))
 
 stock_df <- combined_df %>% 
   filter(value_type == "stock") %>% 
@@ -46,5 +46,5 @@ trends_df <-
   filter(value_type == "keyword") %>% 
   mutate(value = as.numeric(value))
 
-normalize_to_onezero <- function(x)(x-min(x))/(max(x)-min(x))
+normalize_to_onezero <- function(x){(x-min(x))/(max(x)-min(x))}
 

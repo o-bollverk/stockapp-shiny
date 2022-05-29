@@ -9,7 +9,7 @@ The Shiny app is hosted at: http://3.8.186.33:3838/shinyapp/
 
 ![dataflow](https://user-images.githubusercontent.com/65232333/170896480-6832e312-75e2-41d3-8980-cd842761fd8d.png)
 
-The Shiny app is located at /shinyapp
+The Shiny code for R shiny is located at /shinyapp
 
 It consists of 3 files: server.R, ui.R and global.R. Further explanations on the basic structure of Shiny apps: https://shiny.rstudio.com/articles/basics.html
 

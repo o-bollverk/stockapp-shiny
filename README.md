@@ -25,6 +25,8 @@ For sentiment analysis:
 SentimentAnalyser.py <br>
 use_SentimentAnalyser.py <br>
 
+Data processing on EC2 instance with pyspark is done in spark_session.py
+
 ### Notes on arrow setup
 
 In global.R S3 connection is established using the arrow package. Dependencies can be installed via:
@@ -32,14 +34,14 @@ In global.R S3 connection is established using the arrow package. Dependencies c
 source("install_packages.R")
 ```
 
-For debian systems, arrow with S3 funcionality may be set as:
+For debian systems, arrow with S3 funcionality must be installed in the following order:
 ```{bash}
 sudo apt install libssl-dev
 sudo apt install libcurl4-openssl-dev 
 sudo apt install clang
 ```
 
-And
+And only then 
 ```{R}
 source("https://raw.githubusercontent.com/apache/arrow/master/r/R/install-arrow.R")
 install_arrow()

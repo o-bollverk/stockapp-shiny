@@ -7,21 +7,23 @@ The app is hosted at: http://3.8.186.33:3838/shinyapp/
 
 ## Overview
 
+![dataflow](https://user-images.githubusercontent.com/65232333/170896480-6832e312-75e2-41d3-8980-cd842761fd8d.png)
+
 The Shiny app is located at /shinyapp
 
 It consists of 3 files: server.R, ui.R and global.R. Further explanations on the basic structure of Shiny apps: https://shiny.rstudio.com/articles/basics.html
 
-collect_data.R collects scraped data end exports a single csv.
+collect_data.R collects scraped data end exports a single csv. <br>
 upload_to_S3.py uploads a file to S3 given that aws credentials are setup and boto3 is installed
 
 Scraping is done with:
-scrapetweets.py
-scrapeprice.py
-gather_google_trends_data.R
+scrapetweets.py <br>
+scrapeprice.py <br>
+gather_google_trends_data.R <br>
 
 For sentiment analysis:
-SentimentAnalyser.py
-use_SentimentAnalyser.py
+SentimentAnalyser.py <br>
+use_SentimentAnalyser.py <br>
 
 ### Notes on arrow setup
 

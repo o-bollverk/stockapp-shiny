@@ -1,9 +1,9 @@
 # stockapp-shiny
 
-Course project in Cloud Computing and Big Data Analysis
+Course project in Cloud Computing and Big Data Analysis<br>
 Authors: Oliver Bollverk, Monika Dziedzic, Marjan Haghighat, Esther Mahuza, Carles Torres Garzo
 
-The app is hosted at: http://3.8.186.33:3838/shinyapp/
+The Shiny app is hosted at: http://3.8.186.33:3838/shinyapp/
 
 ## Overview
 

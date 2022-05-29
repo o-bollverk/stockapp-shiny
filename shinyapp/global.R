@@ -15,7 +15,16 @@ library(shinydashboard)
 #combined_df <- data.table::fread(paste0(data_dir, "tweets_trends_prices_combined.csv"))
 bucket <- s3_bucket("ccbda-final-proj")
 combined_df = read_csv_arrow(bucket$path("tweets_trends_prices_combined.csv"))
-combined_df = read_csv_arrow(bucket$path("result_aggregated.csv"))
+aggregated_df = read_csv_arrow(bucket$path("result_aggregated.csv"))
+
+# data_dir <- "/home/revilo/shinyapp-data/"
+# combined_df <- data.table::fread(paste0(data_dir, "tweets_trends_prices_combined.csv")) %>% 
+#   as_tibble()
+# aggregated_df <- data.table::fread(paste0(data_dir, "result_aggregated.csv")) %>% 
+#   as_tibble()
+
+combined_df <- combined_df %>% 
+  filter(!(value_type == "keyword" & value == 0))
 
 stock_df <- combined_df %>% 
   filter(value_type == "stock") %>% 

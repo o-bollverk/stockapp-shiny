@@ -27,9 +27,9 @@ use_SentimentAnalyser.py <br>
 
 Data processing on EC2 instance with pyspark is done in spark_session.py
 
-### Notes on arrow setup
+### Notes on arrow and R setup
 
-In global.R S3 connection is established using the arrow package. Dependencies can be installed via:
+In global.R S3 connection is established using the arrow package. All dependencies of the shiny app, except for arrow, can be installed via:
 ```{R}
 source("install_packages.R")
 ```

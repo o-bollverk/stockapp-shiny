@@ -3,8 +3,6 @@
 Course project in Cloud Computing and Big Data Analysis<br>
 Authors: Oliver Bollverk, Monika Dziedzic, Marjan Haghighat, Esther Mahuza, Carles Torres Garzo
 
-The Shiny app is hosted at: http://3.8.186.33:3838/shinyapp/
-
 ## Overview
 
 ![dataflow](https://user-images.githubusercontent.com/65232333/170896480-6832e312-75e2-41d3-8980-cd842761fd8d.png)

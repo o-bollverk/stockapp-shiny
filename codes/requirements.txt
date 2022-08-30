@@ -21,7 +21,7 @@ idna==3.3
 jieba3k==0.35.1
 joblib==1.1.0
 kiwisolver==1.4.2
-lxml==4.8.0
+lxml==4.9.1
 matplotlib==3.5.2
 newspaper3k==0.2.8
 nltk==3.7
